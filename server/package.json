@@ -1,0 +1,26 @@
+{
+  "name": "grocerily-rest-api",
+  "version": "1.0.0",
+  "description": "RESTful API for grocerily",
+  "main": "index.js",
+  "repository": "https://github.com/Pro100CaHya/grocerily",
+  "author": "Pro100CaHya",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.1.4",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "pg": "^8.11.0"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "node -r dotenv/config index.js",
+    "dev": "nodemon -r dotenv/config index.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
