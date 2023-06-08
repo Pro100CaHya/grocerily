@@ -31,7 +31,7 @@ class UsersService {
 
         const token = generateAccessToken(user.rows[0].id, user.rows[0].role);
 
-        return token;
+        return user;
     }
 
     async getAll() {
@@ -41,6 +41,18 @@ class UsersService {
         `);
 
         return users;
+    }
+
+    async getOne(id) {
+        let sqlQuery = `
+            SELECT *
+            FROM "users"
+            WHERE "id" = ${id}
+        `;
+
+        const user = await pool.query(sqlQuery);
+
+        return user;
     }
 
     async registration(username, password, role) {
@@ -63,6 +75,29 @@ class UsersService {
         `, [username, hashedPassword, role]);
 
         return user;
+    }
+
+    async updateOne(id, fields) {
+        const updatedUser = await pool.query(`
+            UPDATE "users"
+            SET "username" = $1,
+                "password" = $2,
+                "role" = $3
+            WHERE "id" = ${id}
+            RETURNING *;
+        `, fields);
+
+        return updatedUser;
+    }
+
+    async deleteOne(id) {
+        const deletedUser = await pool.query(`
+            DELETE FROM "users"
+            WHERE "id" = ${id}
+            RETURNING *;
+        `,);
+
+        return deletedUser;
     }
 }
 

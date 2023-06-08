@@ -5,6 +5,7 @@ import SuppliersController from "../controllers/suppliersController.js";
 const SuppliersRouter = new Router();
 
 SuppliersRouter.get("/", SuppliersController.getAll);
+SuppliersRouter.get("/:id", SuppliersController.getOne);
 
 SuppliersRouter.post("/", SuppliersController.createOne);
 

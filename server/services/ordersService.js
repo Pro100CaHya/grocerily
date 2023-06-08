@@ -25,6 +25,7 @@ class OrdersService {
         const orders = await pool.query(`
             SELECT *
             FROM "orders"
+            ORDER BY "id"
         `);
 
         return orders;

@@ -54,6 +54,23 @@ class CategoriesController {
         }
     }
 
+    async getOne(req, res) {
+        try {
+            const category = await CategoriesService.getOne(req.params.id);
+
+            res.status(200).json({
+                message: "Успешно",
+                data: category
+            });
+        } catch (error) {
+            console.log(error);
+
+            res.status(500).json({
+                message: error.message
+            });
+        }
+    }
+
     async updateOne(req, res) {
         const { name } = req.body;
 

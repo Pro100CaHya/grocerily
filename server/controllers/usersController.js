@@ -5,11 +5,11 @@ class UsersController {
         const { username, password } = req.body;
 
         try {
-            const authorization = await UsersService.authorization(username, password);
+            const user = await UsersService.authorization(username, password);
 
             res.status(200).json({
                 message: "Успешная авторизация",
-                token: authorization
+                data: user
             });
         } catch (error) {
             let errorStatus = 500;
@@ -43,6 +43,42 @@ class UsersController {
         }
     }
 
+    async getOne(req, res) {
+        try {
+            const user = await UsersService.getOne(req.params.id);
+
+            res.status(200).json({
+                message: "Успешно",
+                data: user
+            });
+        } catch (error) {
+            console.log(error);
+
+            res.status(500).json({
+                message: error.message
+            });
+        }
+    }
+
+    async updateOne(req, res) {
+        const { username, password, role } = req.body;
+
+        try {
+            const updatedUser = await UsersService.updateOne(req.params.id, [username, password, role]);
+
+            res.status(200).json({
+                message: "Успешно",
+                data: updatedUser
+            });
+        } catch (error) {
+            console.log(error);
+
+            res.status(500).json({
+                message: error.message
+            });
+        }
+    }
+
     async registration(req, res) {
         const { username, password, role } = req.body;
         
@@ -63,6 +99,23 @@ class UsersController {
             console.log(error);
 
             res.status(errorStatus).json({
+                message: error.message
+            });
+        }
+    }
+
+    async deleteOne(req, res) {
+        try {
+            const deletedUser = await UsersService.deleteOne(req.params.id);
+
+            res.status(200).json({
+                message: "Успешно",
+                data: deletedUser
+            });
+        } catch (error) {
+            console.log(error);
+
+            res.status(500).json({
                 message: error.message
             });
         }

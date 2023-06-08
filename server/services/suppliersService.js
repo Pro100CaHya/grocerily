@@ -25,9 +25,22 @@ class SuppliersService {
         const suppliers = await pool.query(`
             SELECT *
             FROM "suppliers"
+            ORDER BY "id"
         `);
 
         return suppliers;
+    }
+
+    async getOne(id) {
+        let sqlQuery = `
+            SELECT *
+            FROM "suppliers"
+            WHERE "id" = ${id}
+        `;
+
+        const supplier = await pool.query(sqlQuery);
+
+        return supplier;
     }
 
     async updateOne(id, fields) {

@@ -5,10 +5,14 @@ import roleMiddleware from "../middleware/roleMiddleware.js";
 
 const UsersRouter = new Router();
 
-UsersRouter.get("/", roleMiddleware(["admin"]), UsersController.getAll);
+UsersRouter.get("/", UsersController.getAll);
+UsersRouter.get("/:id", UsersController.getOne);
 
 UsersRouter.post("/authorization", UsersController.authorization);
 UsersRouter.post("/registration", UsersController.registration);
 
+UsersRouter.put("/:id", UsersController.updateOne);
+
+UsersRouter.delete("/:id", UsersController.deleteOne);
 
 export default UsersRouter;

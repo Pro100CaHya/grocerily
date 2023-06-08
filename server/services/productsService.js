@@ -21,13 +21,49 @@ class ProductsService {
         return deletedProduct;
     }
 
-    async getAll() {
-        const products = await pool.query(`
+    async getAll(category_and_supplier_name) {
+        let sqlQuery = `
             SELECT *
             FROM "products"
-        `);
+            ORDER BY "id"
+        `;
+
+        if (category_and_supplier_name === "true") {
+            sqlQuery = `
+                SELECT
+                    products.id,
+                    products.name,
+                    products.base_price,
+                    products.unit,
+                    products.weight,
+                    products.is_perishable,
+                    categories.name as category_name,
+                    suppliers.name as supplier_name
+                FROM
+                    products
+                JOIN
+                    categories ON categories.id = products.category
+                JOIN
+                    suppliers ON suppliers.id = products.supplier
+                ORDER BY "id"
+            `;
+        }
+
+        const products = await pool.query(sqlQuery);
 
         return products;
+    }
+
+    async getOne(id) {
+        let sqlQuery = `
+            SELECT *
+            FROM "products"
+            WHERE "id" = ${id}
+        `;
+
+        const product = await pool.query(sqlQuery);
+
+        return product;
     }
 
     async updateOne(id, fields) {

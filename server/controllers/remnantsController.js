@@ -39,7 +39,7 @@ class RemnantsController {
 
     async getAll(req, res) {
         try {
-            const remnants = await RemnantsService.getAll();
+            const remnants = await RemnantsService.getAll(req.params.product);
 
             res.status(200).json({
                 message: "Успешно",

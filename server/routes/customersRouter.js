@@ -5,6 +5,7 @@ import CustomersController from "../controllers/customersController.js";
 const CustomersRouter = new Router();
 
 CustomersRouter.get("/", CustomersController.getAll);
+CustomersRouter.get("/:id", CustomersController.getOne);
 
 CustomersRouter.post("/", CustomersController.createOne);
 

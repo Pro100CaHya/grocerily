@@ -39,11 +39,28 @@ class SuppliersController {
 
     async getAll(req, res) {
         try {
-            const products = await ProductsService.getAll();
+            const products = await ProductsService.getAll(req.query.category_and_supplier_name);
 
             res.status(200).json({
                 message: "Успешно",
                 data: products
+            });
+        } catch (error) {
+            console.log(error);
+
+            res.status(500).json({
+                message: error.message
+            });
+        }
+    }
+
+    async getOne(req, res) {
+        try {
+            const product = await ProductsService.getOne(req.params.id);
+
+            res.status(200).json({
+                message: "Успешно",
+                data: product
             });
         } catch (error) {
             console.log(error);

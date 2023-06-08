@@ -25,9 +25,22 @@ class CategoriesService {
         const categories = await pool.query(`
             SELECT *
             FROM "categories"
+            ORDER BY "id"
         `);
 
         return categories;
+    }
+
+    async getOne(id) {
+        let sqlQuery = `
+            SELECT *
+            FROM "categories"
+            WHERE "id" = ${id}
+        `;
+
+        const category = await pool.query(sqlQuery);
+
+        return category;
     }
 
     async updateOne(id, fields) {

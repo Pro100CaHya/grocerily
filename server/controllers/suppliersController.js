@@ -54,6 +54,23 @@ class SuppliersController {
         }
     }
 
+    async getOne(req, res) {
+        try {
+            const supplier = await SuppliersService.getOne(req.params.id);
+
+            res.status(200).json({
+                message: "Успешно",
+                data: supplier
+            });
+        } catch (error) {
+            console.log(error);
+
+            res.status(500).json({
+                message: error.message
+            });
+        }
+    }
+
     async updateOne(req, res) {
         const { name, address, telephone } = req.body;
 

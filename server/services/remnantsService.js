@@ -21,11 +21,22 @@ class RemnantsService {
         return deletedRemnant;
     }
 
-    async getAll() {
-        const remnants = await pool.query(`
+    async getAll(product) {
+        let sqlQuery = `
             SELECT *
             FROM "remnants"
-        `);
+            ORDER BY "id"
+        `;
+
+        if (product !== undefined) {
+            sqlQuery = `
+                SELECT *
+                FROM "remnants"
+                WHERE "product" = '${product}'
+            `;
+        }
+
+        const remnants = await pool.query(sqlQuery);
 
         return remnants;
     }

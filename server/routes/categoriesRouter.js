@@ -5,6 +5,7 @@ import CategoriesController from "../controllers/categoriesController.js";
 const CategoriesRouter = new Router();
 
 CategoriesRouter.get("/", CategoriesController.getAll);
+CategoriesRouter.get("/:id", CategoriesController.getOne);
 
 CategoriesRouter.post("/", CategoriesController.createOne);
 

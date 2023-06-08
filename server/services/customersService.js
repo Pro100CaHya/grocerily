@@ -25,9 +25,22 @@ class CustomersService {
         const customers = await pool.query(`
             SELECT *
             FROM "customers"
+            ORDER BY "id"
         `);
 
         return customers;
+    }
+
+    async getOne(id) {
+        let sqlQuery = `
+            SELECT *
+            FROM "customers"
+            WHERE "id" = ${id}
+        `;
+
+        const customer = await pool.query(sqlQuery);
+
+        return customer;
     }
 
     async updateOne(id, fields) {

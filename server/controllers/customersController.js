@@ -54,6 +54,23 @@ class CustomersController {
         }
     }
 
+    async getOne(req, res) {
+        try {
+            const customer = await CustomersService.getOne(req.params.id);
+
+            res.status(200).json({
+                message: "Успешно",
+                data: customer
+            });
+        } catch (error) {
+            console.log(error);
+
+            res.status(500).json({
+                message: error.message
+            });
+        }
+    }
+
     async updateOne(req, res) {
         const { surname, name, patronym, telephone, user } = req.body;
 
