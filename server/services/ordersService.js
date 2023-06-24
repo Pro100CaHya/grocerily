@@ -31,6 +31,17 @@ class OrdersService {
         return orders;
     }
 
+    async getByCustomer(customer) {
+        const orders = await pool.query(`
+            SELECT *
+            FROM "orders"
+            WHERE "customer" = ${customer}
+            ORDER BY "id"
+        `);
+
+        return orders;
+    }
+
     async updateOne(id, fields) {
         const updatedOrder = await pool.query(`
             UPDATE "orders"

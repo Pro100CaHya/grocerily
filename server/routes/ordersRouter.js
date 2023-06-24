@@ -5,6 +5,7 @@ import OrdersController from "../controllers/ordersController.js";
 const OrdersRouter = new Router();
 
 OrdersRouter.get("/", OrdersController.getAll);
+OrdersRouter.get("/getByCustomer", OrdersController.getByCustomer);
 
 OrdersRouter.post("/", OrdersController.createOne);
 

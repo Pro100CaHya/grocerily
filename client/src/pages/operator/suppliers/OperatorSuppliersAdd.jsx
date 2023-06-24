@@ -94,7 +94,7 @@ const OperatorSuppliersAdd = () => {
                             className="mt-3"
                             variant="danger"
                             disabled={!edit}
-                            onClick={(e) => navigate("/products")}
+                            onClick={(e) => navigate("/suppliers")}
                         >
                             Назад
                         </Button>

@@ -39,11 +39,28 @@ class RemnantsController {
 
     async getAll(req, res) {
         try {
-            const remnants = await RemnantsService.getAll(req.params.product);
+            const remnants = await RemnantsService.getAll(req.query.product, req.query.updatePrices);
 
             res.status(200).json({
                 message: "Успешно",
                 data: remnants
+            });
+        } catch (error) {
+            console.log(error);
+
+            res.status(500).json({
+                message: error.message
+            });
+        }
+    }
+
+    async getOne(req, res) {
+        try {
+            const remnant = await RemnantsService.getOne(req.params.id, req.query.checkForExpire, req.query.getHoursTillExpiration);
+
+            res.status(200).json({
+                message: "Успешно",
+                data: remnant
             });
         } catch (error) {
             console.log(error);

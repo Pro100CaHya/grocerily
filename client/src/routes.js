@@ -14,6 +14,21 @@ import OperatorCategoriesAdd from "./pages/operator/categories/OperatorCategorie
 import OperatorCustomersList from "./pages/operator/clients/OperatorCustomersList";
 import OperatorCustomersInfo from "./pages/operator/clients/OperatorCustomersInfo";
 import OperatorCustomersAdd from "./pages/operator/clients/OperatorCustomersAdd";
+import OperatorRemnantsList from "./pages/operator/remnants/OperatorRemnantsList";
+import OperatorRemnantsInfo from "./pages/operator/remnants/OperatorRemnantsInfo";
+import OperatorRemnantsAdd from "./pages/operator/remnants/OperatorRemnantsAdd";
+import CustomerProductsList from "./pages/customer/products/CustomerProductsList";
+import CustomerProductsInfo from "./pages/customer/products/CustomerProductsInfo";
+import CustomerCategoriesList from "./pages/customer/categories/CustomerCategoriesList";
+import CustomerSuppliersList from "./pages/customer/suppliers/CustomerSuppliersList";
+import CustomerOrdersAdd from "./pages/customer/orders/CustomerOrdersAdd";
+import CustomerOrdersList from "./pages/customer/orders/CustomersOrdersList";
+import CustomerOrdersInfo from "./pages/customer/orders/CustomerOrdersInfo";
+import OperatorExpiredProducts from "./pages/operator/products/OperatorExpiredProducts";
+import CheckIsExpiredProduct from "./pages/CheckIsExpiredProduct";
+import GetHoursTillExpiration from "./pages/GetHoursTillExpiration";
+import GetProductsLessCount from "./pages/GetProductsLessCount";
+import GetSuppliersThatHaveProducts from "./pages/GetSuppliersThatHaveProducts";
 
 export const publicRoutes = [
     {
@@ -25,7 +40,7 @@ export const publicRoutes = [
         id: 1,
         path: "*",
         element: <Navigate to="/authorization"/>
-    },
+    }
 ];
 
 export const operatorRoutes = [
@@ -98,5 +113,103 @@ export const operatorRoutes = [
         id: 13,
         path: "/customers/add",
         element: <OperatorCustomersAdd />
+    },
+    {
+        id: 14,
+        path: "/remnants",
+        element: <OperatorRemnantsList />
+    },
+    {
+        id: 15,
+        path: "/remnants/:id",
+        element: <OperatorRemnantsInfo />
+    },
+    {
+        id: 16,
+        path: "/remnants/add",
+        element: <OperatorRemnantsAdd />
+    },
+    {
+        id: 17,
+        path: "/products/getOneDayTillExpirationProducts",
+        element: <OperatorExpiredProducts />
+    },
+    {
+        id: 18,
+        path: "/products/checkIsExpired",
+        element: <CheckIsExpiredProduct />
+    },
+    {
+        id: 19,
+        path: "/products/getHoursTillExpiration",
+        element: <GetHoursTillExpiration />
+    },
+    {
+        id: 20,
+        path: "/products/getProductsLessCount",
+        element: <GetProductsLessCount />
+    },
+    {
+        id: 21,
+        path: "/products/getSuppliersThatHaveProducts",
+        element: <GetSuppliersThatHaveProducts />
     }
 ];
+
+export const customerRoutes = [
+    {
+        id: 0,
+        path: "/",
+        element: <CustomerProductsList />
+    },
+    {
+        id: 1,
+        path: "/authorization",
+        element: <Navigate to="/"/>
+    },
+    {
+        id: 2,
+        path: "/products",
+        element: <CustomerProductsList />
+    },
+    {
+        id: 3,
+        path: "/products/:id",
+        element: <CustomerProductsInfo />
+    },
+    {
+        id: 4,
+        path: "/categories",
+        element: <CustomerCategoriesList />
+    },
+    {
+        id: 5,
+        path: "/suppliers",
+        element: <CustomerSuppliersList />
+    },
+    {
+        id: 6,
+        path: "/orders/add",
+        element: <CustomerOrdersAdd />
+    },
+    {
+        id: 7,
+        path: "/orders",
+        element: <CustomerOrdersList />
+    },
+    {
+        id: 8,
+        path: "/orders/:id",
+        element: <CustomerOrdersInfo />
+    },
+    {
+        id: 9,
+        path: "/products/checkIsExpired",
+        element: <CheckIsExpiredProduct />
+    },
+    {
+        id: 10,
+        path: "/products/getHoursTillExpiration",
+        element: <GetHoursTillExpiration />
+    }
+]

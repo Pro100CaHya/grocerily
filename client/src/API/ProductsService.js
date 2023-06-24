@@ -1,10 +1,11 @@
 import axios from "axios";
 
 export class ProductsService {
-    static async getAll(category_and_supplier_name = false) {
+    static async getAll(category_and_supplier_name = false, getOneDayTillExpirationProducts = false) {
         return axios.get(`http://localhost:8000/api/products`, {
             params: {
-                category_and_supplier_name
+                category_and_supplier_name,
+                getOneDayTillExpirationProducts
             }
         });
     }
@@ -23,5 +24,13 @@ export class ProductsService {
 
     static async addOne(product) {
         return axios.post(`http://localhost:8000/api/products/`, product);
+    }
+
+    static async getProductsLessCount(count) {
+        return axios.get(`http://localhost:8000/api/products`, {
+            params: {
+                count
+            }
+        });
     }
 }

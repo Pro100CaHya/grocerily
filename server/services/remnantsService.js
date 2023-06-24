@@ -21,11 +21,18 @@ class RemnantsService {
         return deletedRemnant;
     }
 
-    async getAll(product) {
+    async getAll(product, updatePrices) {
         let sqlQuery = `
-            SELECT *
+            SELECT "remnants"."id",
+                "products"."name" AS "product_name",
+                "products"."id" AS "product_id",
+                "remnants"."count",
+                "remnants"."actual_price",
+                "remnants"."delivery_date",
+                "remnants"."expire_date"
             FROM "remnants"
-            ORDER BY "id"
+            JOIN "products" ON "remnants"."product" = "products"."id"
+            ORDER BY "products"."name", "remnants"."id"
         `;
 
         if (product !== undefined) {
@@ -36,9 +43,41 @@ class RemnantsService {
             `;
         }
 
+        if (updatePrices === "true") {
+            sqlQuery = `
+                CALL decrease_prices();
+            `;
+        }
+
         const remnants = await pool.query(sqlQuery);
 
         return remnants;
+    }
+
+    async getOne(id, checkForExpire, getHoursTillExpiration) {
+        let sqlQuery = `
+            SELECT *
+            FROM "remnants"
+            WHERE "id" = ${id}
+        `;
+
+        if (checkForExpire === "true") {
+            sqlQuery = `
+                SELECT *
+                FROM check_product_for_expire(${id})
+            `;
+        }
+
+        if (getHoursTillExpiration === "true") {
+            sqlQuery = `
+                SELECT *
+                FROM get_hours_till_expiration(${id})
+            `;
+        }
+
+        const remnant = await pool.query(sqlQuery);
+
+        return remnant;
     }
 
     async updateOne(id, fields) {

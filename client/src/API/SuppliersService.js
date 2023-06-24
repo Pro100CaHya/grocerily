@@ -20,4 +20,12 @@ export class SuppliersService {
     static async deleteOne(id) {
         return axios.delete(`http://localhost:8000/api/suppliers/${id}`);
     }
+
+    static async getSuppliersThatHaveGoods(getSuppliersThatHaveGoods) {
+        return axios.get(`http://localhost:8000/api/suppliers/`, {
+            params: {
+                getSuppliersThatHaveGoods
+            }
+        });
+    }
 }

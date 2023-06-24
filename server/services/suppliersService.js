@@ -21,12 +21,31 @@ class SuppliersService {
         return deletedSuppplier;
     }
 
-    async getAll() {
-        const suppliers = await pool.query(`
+    async getAll(getSuppliersThatHaveGoods) {
+
+        let sqlQuery = `
             SELECT *
             FROM "suppliers"
             ORDER BY "id"
-        `);
+        `;
+
+        if (getSuppliersThatHaveGoods === "true") {
+            sqlQuery = `
+                SELECT
+                    DISTINCT "suppliers"."id",
+                    "suppliers"."name",
+                    "suppliers"."address",
+                    "suppliers"."telephone"
+                FROM
+                    "suppliers"
+                JOIN
+                    "products" ON "products"."supplier" = "suppliers"."id"
+                JOIN
+                    "remnants" ON "remnants"."product" = "products"."id"
+            `;
+        }
+
+        const suppliers = await pool.query(sqlQuery);
 
         return suppliers;
     }

@@ -71,6 +71,24 @@ class CustomersController {
         }
     }
 
+    async getByUserId(req, res) {
+        try {
+            console.log(req.query.user);
+            const customer = await CustomersService.getByUserId(req.query.user);
+
+            res.status(200).json({
+                message: "Успешно",
+                data: customer
+            });
+        } catch (error) {
+            console.log(error);
+
+            res.status(500).json({
+                message: error.message
+            });
+        }
+    }
+
     async updateOne(req, res) {
         const { surname, name, patronym, telephone, user } = req.body;
 

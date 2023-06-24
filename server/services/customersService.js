@@ -43,6 +43,18 @@ class CustomersService {
         return customer;
     }
 
+    async getByUserId(id) {
+        let sqlQuery = `
+            SELECT *
+            FROM "customers"
+            WHERE "user" = ${id}
+        `;
+
+        const customer = await pool.query(sqlQuery);
+
+        return customer;
+    }
+
     async updateOne(id, fields) {
         const updatedCustomer = await pool.query(`
             UPDATE "customers"

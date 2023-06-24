@@ -39,7 +39,7 @@ class SuppliersController {
 
     async getAll(req, res) {
         try {
-            const suppliers = await SuppliersService.getAll();
+            const suppliers = await SuppliersService.getAll(req.query.getSuppliersThatHaveGoods);
 
             res.status(200).json({
                 message: "Успешно",

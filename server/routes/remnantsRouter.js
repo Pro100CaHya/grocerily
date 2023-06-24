@@ -5,6 +5,7 @@ import RemnantsController from "../controllers/remnantsController.js";
 const RemnantsRouter = new Router();
 
 RemnantsRouter.get("/", RemnantsController.getAll);
+RemnantsRouter.get("/:id", RemnantsController.getOne);
 
 RemnantsRouter.post("/", RemnantsController.createOne);
 

@@ -3,8 +3,8 @@ import { pool } from "../config/db.js";
 class OrdersDetailsService {
     async createOne(fields) {
         const createdOrderDetail = await pool.query(`
-            INSERT INTO "orders_details" ("count", "product", "order")
-            VALUES ($1, $2, $3)
+            INSERT INTO "order_details" ("count", "product", "order", "remnant")
+            VALUES ($1, $2, $3, $4)
             RETURNING *;
         `, fields);
 
@@ -30,12 +30,23 @@ class OrdersDetailsService {
         return orders;
     }
 
+    async getByOrder(order) {
+        const orderDetails = await pool.query(`
+            SELECT *
+            FROM "order_details"
+            WHERE "order" = ${order}
+        `);
+
+        return orderDetails;
+    }
+
     async updateOne(id, fields) {
         const updatedOrderDetail = await pool.query(`
-            UPDATE "orders"
+            UPDATE "order_details"
             SET "count" = $1,
                 "product" = $2,
-                "order" = $3
+                "order" = $3,
+                "remnant" = $4
             WHERE "id" = ${id}
             RETURNING *;
         `, fields);

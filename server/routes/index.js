@@ -4,10 +4,11 @@ import SuppliersRouter from "./suppliersRouter.js";
 import UsersRouter from "./usersRouter.js";
 import CustomersRouter from "./customersRouter.js";
 import OrdersRouter from "./ordersRouter.js";
-import OrderDetailsRouter from "./OrderDetailsRouter.js";
+import OrderDetailsRouter from "./orderDetailsRouter.js";
 import CategoriesRouter from "./categoriesRouter.js";
 import ProductsRouter from "./productsRouter.js";
 import RemnantsRouter from "./remnantsRouter.js";
+import ExcelRouter from "./excelRouter.js";
 
 const router = new Router();
 
@@ -19,5 +20,6 @@ router.use("/order_details/", OrderDetailsRouter);
 router.use("/categories", CategoriesRouter);
 router.use("/products", ProductsRouter);
 router.use("/remnants", RemnantsRouter);
+router.use("/excel", ExcelRouter);
 
 export default router;

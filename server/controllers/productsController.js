@@ -1,4 +1,5 @@
 import ProductsService from "../services/productsService.js";
+import ExcelService from "../services/excelService.js";
 
 class SuppliersController {
     async createOne(req, res) {
@@ -39,7 +40,31 @@ class SuppliersController {
 
     async getAll(req, res) {
         try {
-            const products = await ProductsService.getAll(req.query.category_and_supplier_name);
+            if (req.query.getProductsByCategoryWithPricesFile === "true") {
+                const products = await ProductsService.getProductsByCategoryWithPrices();
+
+                const columns = [
+                    {
+                        key: "category_name",
+                        header: "Категория"
+                    },
+                    {
+                        key: "product_name",
+                        header: "Продукт"
+                    },
+                    {
+                        key: "old_price",
+                        header: "Старая цена"
+                    },
+                    {
+                        key: "new_price",
+                        header: "Новая цена"
+                    }
+                ]
+                const file = await ExcelService.write(products.rows, columns);
+                res.download("data.xlsx");
+            }
+            const products = await ProductsService.getAll(req.query.category_and_supplier_name, req.query.getOneDayTillExpirationProducts, req.query.count);
 
             res.status(200).json({
                 message: "Успешно",
@@ -61,6 +86,23 @@ class SuppliersController {
             res.status(200).json({
                 message: "Успешно",
                 data: product
+            });
+        } catch (error) {
+            console.log(error);
+
+            res.status(500).json({
+                message: error.message
+            });
+        }
+    }
+
+    async getOneDayTillExpirationProducts(req, res) {
+        try {
+            // const product = await ProductsService.getOneDayTillExpirationProducts();
+
+            res.status(200).json({
+                message: "Успешно",
+                data: "product"
             });
         } catch (error) {
             console.log(error);

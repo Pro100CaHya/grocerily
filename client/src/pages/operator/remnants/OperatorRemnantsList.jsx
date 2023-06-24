@@ -1,74 +1,55 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-
-import FileDownload from "js-file-download";
 
 import Table from 'react-bootstrap/Table';
 
 import PageLayout from "../../../components/ui/PageLayout";
 
-import { ProductsService } from "../../../API/ProductsService";
 import { useFetching } from "../../../hooks/useFetching";
 import { Button } from "react-bootstrap";
+import { RemnantsService } from "../../../API/RemnantsService";
+import { convertDateFromISO } from "../../../utils/convertDate";
 
-const OperatorProductList = () => {
+const OperatorRemnantsList = () => {
     const navigate = useNavigate();
-    const [products, setProducts] = useState([]);
+    const [remnants, setRemnants] = useState([]);
 
-    const [fetchProducts, isFetchingLoading, fetchError] = useFetching(async () => {
-        const getProducts = await ProductsService.getAll(true);
+    const [fetchRemnants, isFetchingLoading, fetchError] = useFetching(async () => {
+        const getRemnants = await RemnantsService.getAll();
 
-        const updProducts = getProducts.data.data.rows.map((product) => {
-            const updProduct = {
-                ...product,
-            }
-
-            if (product.is_perishable === true) {
-                updProduct["type"] = "Скоропортящийся товар"
-            } else {
-                updProduct["type"] = "Обычный товар"
-            }
-
-            delete updProduct["is_perishable"];
-
-            return updProduct;
-        });
-
-        setProducts(updProducts);
+        setRemnants(getRemnants.data.data.rows);
     });
 
-    const [deleteProduct, isDeleteLoading, deleteError] = useFetching(async (id) => {
-        const deleteRes = await ProductsService.deleteOne(id);
+    const [deleteRemnant, isDeleteLoading, deleteError] = useFetching(async (id) => {
+        const deleteRes = await RemnantsService.deleteOne(id);
 
-        const deletedProductId = products.findIndex((product) => product.id === id);
-        const newProducts = [...products];
-        newProducts.splice(deletedProductId, 1);
+        const deletedRemnantId = remnants.findIndex((supplier) => supplier.id === id);
+        const newRemnants = [...remnants];
+        newRemnants.splice(deletedRemnantId, 1);
 
-        setProducts(newProducts);
+        setRemnants(newRemnants);
+    });
+
+    const [updatePrices, isUpdateLoading, updateError] = useFetching(async () => {
+        const updatePricesRes = await RemnantsService.updatePrices(true);
     });
 
     const buttonDeleteHandler = (id) => {
-        deleteProduct(id);
+        deleteRemnant(id);
     }
 
-    const getFile = () => {
-        axios({
-            url: 'http://localhost:8000/api/excel/productsByCategoryWithPrices',
-            method: 'GET',
-            responseType: 'blob'
-        }).then((response) => {
-            FileDownload(response.data, "data.xlsx");
-        });
+    const buttonUpdatePricesHandler = async () => {
+        await updatePrices();
+        await fetchRemnants();
     }
 
     useEffect(() => {
-        fetchProducts();
+        fetchRemnants();
     }, []);
 
     return (
         <>
-            <PageLayout title={"Список продуктов"}>
+            <PageLayout title={"Список остатков товаров"}>
                 {
                     isFetchingLoading === true
                         ?
@@ -96,81 +77,67 @@ const OperatorProductList = () => {
                                         :
                                         <div className="mt-3" style={{ minHeight: "32px" }}></div>
                             }
-                            <Button onClick={() => navigate("/products/add")}>
-                                Добавить продукт
+                            <Button onClick={() => navigate("/remnants/add")}>
+                                Добавить остатки товара
                             </Button>
-                            <Button className="my-3 ms-3" onClick={getFile}>
-                                Скачать список продуктов по категориям со старой и новой ценой
+                            <Button
+                                onClick={buttonUpdatePricesHandler}
+                                variant={"secondary"}
+                                className="ms-3"
+                            >
+                                Обновить цены
                             </Button>
                             <Table striped bordered hover
                                 className="mt-3"
                             >
                                 <thead>
                                     <tr>
-                                        <th>Штрих-код</th>
+                                        <th>ID</th>
                                         <th>Название продукта</th>
-                                        <th>Базовая цена</th>
-                                        <th>Единица измерения</th>
-                                        <th>Вес (кг)</th>
-                                        <th>Тип товара</th>
-                                        <th>Категория</th>
-                                        <th>Поставщик</th>
+                                        <th>Актуальная цена (руб.)</th>
+                                        <th>Дата поставки</th>
+                                        <th>Дата окончания срока годности</th>
                                         <th></th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {
-                                        products.map((product) =>
-                                            <tr key={product.id}>
+                                        remnants.map((remnant) =>
+                                            <tr key={remnant.id}>
                                                 <td>
                                                     {
-                                                        product.id
+                                                        remnant.id
                                                     }
                                                 </td>
                                                 <td>
                                                     {
-                                                        product.name
+                                                        remnant.product_name
                                                     }
                                                 </td>
                                                 <td>
                                                     {
-                                                        product.base_price
+                                                        remnant.actual_price
                                                     }
                                                 </td>
                                                 <td>
                                                     {
-                                                        product.unit
+                                                        convertDateFromISO(remnant.delivery_date)
                                                     }
                                                 </td>
                                                 <td>
                                                     {
-                                                        product.weight
+                                                        convertDateFromISO(remnant.expire_date)
                                                     }
                                                 </td>
                                                 <td>
-                                                    {
-                                                        product.type
-                                                    }
-                                                </td>
-                                                <td>
-                                                    {
-                                                        product.category_name
-                                                    }
-                                                </td>
-                                                <td>
-                                                    {
-                                                        product.supplier_name
-                                                    }
-                                                </td>
-                                                <td>
-                                                    <Link to={`/products/${product.id}`}>Подробнее</Link>
+                                                    <Link to={`/remnants/${remnant.id}`}>Подробнее</Link>
                                                 </td>
                                                 <td>
                                                     <span
                                                         className="text-danger text-decoration-underline"
                                                         style={{ cursor: "pointer" }}
-                                                        onClick={(e) => buttonDeleteHandler(product.id)}
+                                                        onClick={(e) => buttonDeleteHandler(remnant.id)}
                                                     >
                                                         Удалить
                                                     </span>
@@ -187,4 +154,4 @@ const OperatorProductList = () => {
     );
 };
 
-export default OperatorProductList;
+export default OperatorRemnantsList;

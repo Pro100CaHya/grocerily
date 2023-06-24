@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
-
-import FileDownload from "js-file-download";
+import { Link } from "react-router-dom";
 
 import Table from 'react-bootstrap/Table';
 
@@ -10,10 +7,8 @@ import PageLayout from "../../../components/ui/PageLayout";
 
 import { ProductsService } from "../../../API/ProductsService";
 import { useFetching } from "../../../hooks/useFetching";
-import { Button } from "react-bootstrap";
 
-const OperatorProductList = () => {
-    const navigate = useNavigate();
+const CustomerProductsList = () => {
     const [products, setProducts] = useState([]);
 
     const [fetchProducts, isFetchingLoading, fetchError] = useFetching(async () => {
@@ -38,30 +33,6 @@ const OperatorProductList = () => {
         setProducts(updProducts);
     });
 
-    const [deleteProduct, isDeleteLoading, deleteError] = useFetching(async (id) => {
-        const deleteRes = await ProductsService.deleteOne(id);
-
-        const deletedProductId = products.findIndex((product) => product.id === id);
-        const newProducts = [...products];
-        newProducts.splice(deletedProductId, 1);
-
-        setProducts(newProducts);
-    });
-
-    const buttonDeleteHandler = (id) => {
-        deleteProduct(id);
-    }
-
-    const getFile = () => {
-        axios({
-            url: 'http://localhost:8000/api/excel/productsByCategoryWithPrices',
-            method: 'GET',
-            responseType: 'blob'
-        }).then((response) => {
-            FileDownload(response.data, "data.xlsx");
-        });
-    }
-
     useEffect(() => {
         fetchProducts();
     }, []);
@@ -78,30 +49,6 @@ const OperatorProductList = () => {
                         </div>
                         :
                         <>
-                            {
-                                isDeleteLoading
-                                    ?
-                                    <div className="d-flex justify-content-center mt-3">
-                                        <div className="spinner-border mx-auto" role="status">
-                                        </div>
-                                    </div>
-                                    :
-                                    deleteError
-                                        ?
-                                        <div className="mt-3 text-danger text-center" style={{ minHeight: "32px" }}>
-                                            {
-                                                deleteError
-                                            }
-                                        </div>
-                                        :
-                                        <div className="mt-3" style={{ minHeight: "32px" }}></div>
-                            }
-                            <Button onClick={() => navigate("/products/add")}>
-                                Добавить продукт
-                            </Button>
-                            <Button className="my-3 ms-3" onClick={getFile}>
-                                Скачать список продуктов по категориям со старой и новой ценой
-                            </Button>
                             <Table striped bordered hover
                                 className="mt-3"
                             >
@@ -115,7 +62,6 @@ const OperatorProductList = () => {
                                         <th>Тип товара</th>
                                         <th>Категория</th>
                                         <th>Поставщик</th>
-                                        <th></th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -166,15 +112,6 @@ const OperatorProductList = () => {
                                                 <td>
                                                     <Link to={`/products/${product.id}`}>Подробнее</Link>
                                                 </td>
-                                                <td>
-                                                    <span
-                                                        className="text-danger text-decoration-underline"
-                                                        style={{ cursor: "pointer" }}
-                                                        onClick={(e) => buttonDeleteHandler(product.id)}
-                                                    >
-                                                        Удалить
-                                                    </span>
-                                                </td>
                                             </tr>
                                         )
                                     }
@@ -187,4 +124,4 @@ const OperatorProductList = () => {
     );
 };
 
-export default OperatorProductList;
+export default CustomerProductsList;

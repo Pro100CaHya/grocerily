@@ -9,6 +9,14 @@ export class CustomersService {
         return axios.get(`http://localhost:8000/api/customers/${id}`);
     }
 
+    static async getByUserId(user) {
+        return axios.get(`http://localhost:8000/api/customers/getByUserId`, {
+            params: {
+                user
+            }
+        });
+    }
+
     static async updateOne(id, client) {
         return axios.put(`http://localhost:8000/api/customers/${id}`, client);
     }
