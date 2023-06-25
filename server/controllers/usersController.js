@@ -28,7 +28,7 @@ class UsersController {
 
     async getAll(req, res) {
         try {
-            const users = await UsersService.getAll();
+            const users = await UsersService.getAll(req.query.role);
 
             res.status(200).json({
                 message: "Успешно",

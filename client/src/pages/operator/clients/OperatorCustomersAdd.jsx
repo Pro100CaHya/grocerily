@@ -6,7 +6,7 @@ import { useFetching } from "../../../hooks/useFetching.js";
 
 import { CustomersService } from "../../../API/CustomersService.js";
 import PageLayout from "../../../components/ui/PageLayout.jsx";
-import { UserService } from "../../../API/UsersService.js";
+import { UsersService } from "../../../API/UsersService.js";
 
 const OperatorCustomersAdd = () => {
     const navigate = useNavigate();
@@ -34,7 +34,7 @@ const OperatorCustomersAdd = () => {
     }
 
     const [addCustomer, isAddLoading, addError] = useFetching(async (customer, user) => {
-        const addedUser = await UserService.registration(user);
+        const addedUser = await UsersService.registration(user);
         const addData = await CustomersService.addOne({ ...customer, "user": addedUser.data.data.rows[0].id });
 
         setEdit(true);

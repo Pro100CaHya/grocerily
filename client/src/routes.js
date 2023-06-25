@@ -29,6 +29,11 @@ import CheckIsExpiredProduct from "./pages/CheckIsExpiredProduct";
 import GetHoursTillExpiration from "./pages/GetHoursTillExpiration";
 import GetProductsLessCount from "./pages/GetProductsLessCount";
 import GetSuppliersThatHaveProducts from "./pages/GetSuppliersThatHaveProducts";
+import OperatorOrdersList from "./pages/operator/orders/OperatorOrdersList";
+import OperatorOrdersInfo from "./pages/operator/orders/OperatorOrdersInfo";
+import RegularPreOrderAdd from "./pages/regular/orders/RegularPreOrderAdd";
+import AdminOperatorsList from "./pages/admin/operators/AdminOperatorsList";
+import AdminOperatorsAdd from "./pages/admin/operators/AdminOperatorsAdd";
 
 export const publicRoutes = [
     {
@@ -40,6 +45,139 @@ export const publicRoutes = [
         id: 1,
         path: "*",
         element: <Navigate to="/authorization"/>
+    }
+];
+
+export const adminRoutes = [
+    {
+        id: 0,
+        path: "/",
+        element: <OperatorProductList />
+    },
+    {
+        id: 1,
+        path: "/authorization",
+        element: <Navigate to="/"/>
+    },
+    {
+        id: 2,
+        path: "/products",
+        element: <OperatorProductList />
+    },
+    {
+        id: 3,
+        path: "/products/:id",
+        element: <OperatorProductInfo />
+    },
+    {
+        id: 4,
+        path: "/products/add",
+        element: <OperatorProductAdd />
+    },
+    {
+        id: 5,
+        path: "/suppliers",
+        element: <OperatorSuppliersList />
+    },
+    {
+        id: 6,
+        path: "/suppliers/:id",
+        element: <OperatorSuppliersInfo />
+    },
+    {
+        id: 7,
+        path: "/suppliers/add",
+        element: <OperatorSuppliersAdd />
+    },
+    {
+        id: 8,
+        path: "/categories",
+        element: <OperatorCategoriesList />
+    },
+    {
+        id: 9,
+        path: "/categories/:id",
+        element: <OperatorCategoriesInfo />
+    },
+    {
+        id: 10,
+        path: "/categories/add",
+        element: <OperatorCategoriesAdd />
+    },
+    {
+        id: 11,
+        path: "/customers",
+        element: <OperatorCustomersList />
+    },
+    {
+        id: 12,
+        path: "/customers/:id",
+        element: <OperatorCustomersInfo />
+    },
+    {
+        id: 13,
+        path: "/customers/add",
+        element: <OperatorCustomersAdd />
+    },
+    {
+        id: 14,
+        path: "/remnants",
+        element: <OperatorRemnantsList />
+    },
+    {
+        id: 15,
+        path: "/remnants/:id",
+        element: <OperatorRemnantsInfo />
+    },
+    {
+        id: 16,
+        path: "/remnants/add",
+        element: <OperatorRemnantsAdd />
+    },
+    {
+        id: 17,
+        path: "/products/getOneDayTillExpirationProducts",
+        element: <OperatorExpiredProducts />
+    },
+    {
+        id: 18,
+        path: "/products/checkIsExpired",
+        element: <CheckIsExpiredProduct />
+    },
+    {
+        id: 19,
+        path: "/products/getHoursTillExpiration",
+        element: <GetHoursTillExpiration />
+    },
+    {
+        id: 20,
+        path: "/products/getProductsLessCount",
+        element: <GetProductsLessCount />
+    },
+    {
+        id: 21,
+        path: "/products/getSuppliersThatHaveProducts",
+        element: <GetSuppliersThatHaveProducts />
+    },
+    {
+        id: 22,
+        path: "/orders",
+        element: <OperatorOrdersList />
+    },
+    {
+        id: 23,
+        path: "/orders/:id",
+        element: <OperatorOrdersInfo />
+    },
+    {
+        id: 24,
+        path: "/operators",
+        element: <AdminOperatorsList />
+    },
+    {
+        id: 25,
+        path: "/operators/add",
+        element: <AdminOperatorsAdd />
     }
 ];
 
@@ -153,6 +291,16 @@ export const operatorRoutes = [
         id: 21,
         path: "/products/getSuppliersThatHaveProducts",
         element: <GetSuppliersThatHaveProducts />
+    },
+    {
+        id: 22,
+        path: "/orders",
+        element: <OperatorOrdersList />
+    },
+    {
+        id: 23,
+        path: "/orders/:id",
+        element: <OperatorOrdersInfo />
     }
 ];
 
@@ -211,5 +359,68 @@ export const customerRoutes = [
         id: 10,
         path: "/products/getHoursTillExpiration",
         element: <GetHoursTillExpiration />
+    }
+]
+
+export const regularRoutes = [
+    {
+        id: 0,
+        path: "/",
+        element: <CustomerProductsList />
+    },
+    {
+        id: 1,
+        path: "/authorization",
+        element: <Navigate to="/"/>
+    },
+    {
+        id: 2,
+        path: "/products",
+        element: <CustomerProductsList />
+    },
+    {
+        id: 3,
+        path: "/products/:id",
+        element: <CustomerProductsInfo />
+    },
+    {
+        id: 4,
+        path: "/categories",
+        element: <CustomerCategoriesList />
+    },
+    {
+        id: 5,
+        path: "/suppliers",
+        element: <CustomerSuppliersList />
+    },
+    {
+        id: 6,
+        path: "/orders/add",
+        element: <CustomerOrdersAdd />
+    },
+    {
+        id: 7,
+        path: "/orders",
+        element: <CustomerOrdersList />
+    },
+    {
+        id: 8,
+        path: "/orders/:id",
+        element: <CustomerOrdersInfo />
+    },
+    {
+        id: 9,
+        path: "/products/checkIsExpired",
+        element: <CheckIsExpiredProduct />
+    },
+    {
+        id: 10,
+        path: "/products/getHoursTillExpiration",
+        element: <GetHoursTillExpiration />
+    },
+    {
+        id: 11,
+        path: "/orders/createPreOrder",
+        element: <RegularPreOrderAdd />
     }
 ]

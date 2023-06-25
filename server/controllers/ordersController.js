@@ -54,6 +54,23 @@ class OrdersController {
         }
     }
 
+    async getOne(req, res) {
+        try {
+            const orders = await OrdersService.getOne(req.params.id);
+
+            res.status(200).json({
+                message: "Успешно",
+                data: orders
+            });
+        } catch (error) {
+            console.log(error);
+
+            res.status(500).json({
+                message: error.message
+            });
+        }
+    }
+
     async getByCustomer(req, res) {
         try {
             const orders = await OrdersService.getByCustomer(req.query.customer);

@@ -5,7 +5,7 @@ import { Button, Form } from "react-bootstrap";
 import { useFetching } from "../../../hooks/useFetching.js";
 
 import { CustomersService } from "../../../API/CustomersService.js";
-import { UserService } from "../../../API/UsersService.js";
+import { UsersService } from "../../../API/UsersService.js";
 
 import PageLayout from "../../../components/ui/PageLayout.jsx";
 
@@ -50,7 +50,7 @@ const OperatorCustomersInfo = () => {
 
     const [fetchCustomer, isFetchingLoading, fetchError] = useFetching(async () => {
         const customerData = await CustomersService.getOne(params.id);
-        const userData = await UserService.getOne(customerData.data.data.rows[0].user);
+        const userData = await UsersService.getOne(customerData.data.data.rows[0].user);
 
         console.log(userData.data.data.rows[0])
 
@@ -60,7 +60,7 @@ const OperatorCustomersInfo = () => {
 
     const [updateCustomer, isUpdatingLoading, updateError] = useFetching(async () => {
         const updateData = await CustomersService.updateOne(params.id, customer);
-        const userUpdate = await UserService.updateOne(customer.user, {
+        const userUpdate = await UsersService.updateOne(customer.user, {
             "username": user.username,
             "password": user.password,
             "role": user.role

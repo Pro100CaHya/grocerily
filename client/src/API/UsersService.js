@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export class UserService {
+export class UsersService {
     static async authorization(authData) {
         return axios.post(`http://localhost:8000/api/users/authorization`, authData);
     }
@@ -13,7 +13,7 @@ export class UserService {
         return axios.get(`http://localhost:8000/api/users/${id}`);
     }
 
-    static async getAll(id) {
+    static async getAll() {
         return axios.get(`http://localhost:8000/api/users/`);
     }
 
@@ -23,5 +23,13 @@ export class UserService {
 
     static async deleteOne(id) {
         return axios.delete(`http://localhost:8000/api/users/${id}`);
+    }
+
+    static async getOperators(role) {
+        return axios.get(`http://localhost:8000/api/users/`, {
+            params: {
+                role
+            }
+        });
     }
 }

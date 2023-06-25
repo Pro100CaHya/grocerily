@@ -8,7 +8,7 @@ import PageLayout from "../../../components/ui/PageLayout";
 import { useFetching } from "../../../hooks/useFetching";
 import { Button } from "react-bootstrap";
 import { CustomersService } from "../../../API/CustomersService";
-import { UserService } from "../../../API/UsersService";
+import { UsersService } from "../../../API/UsersService";
 
 const OperatorCustomersList = () => {
     const navigate = useNavigate();
@@ -25,7 +25,7 @@ const OperatorCustomersList = () => {
 
         console.log(selectedClient.user);
 
-        const deleteUser = await UserService.deleteOne(selectedClient.user);
+        const deleteUser = await UsersService.deleteOne(selectedClient.user);
 
         const deletedClientId = clients.findIndex((client) => client.id === selectedClient.id);
         const newClients = [...clients];

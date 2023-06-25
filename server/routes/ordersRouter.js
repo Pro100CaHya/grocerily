@@ -6,6 +6,7 @@ const OrdersRouter = new Router();
 
 OrdersRouter.get("/", OrdersController.getAll);
 OrdersRouter.get("/getByCustomer", OrdersController.getByCustomer);
+OrdersRouter.get("/getOne/:id", OrdersController.getOne);
 
 OrdersRouter.post("/", OrdersController.createOne);
 

@@ -23,9 +23,29 @@ class OrdersService {
 
     async getAll() {
         const orders = await pool.query(`
-            SELECT *
+            SELECT
+                "orders"."id",
+                "orders"."sum",
+                "orders"."status",
+                CONCAT("customers"."surname", ' ', "customers"."name", ' ', "customers"."patronym") AS customer
             FROM "orders"
+            JOIN "customers" ON "orders"."customer" = "customers"."id"
             ORDER BY "id"
+        `);
+
+        return orders;
+    }
+
+    async getOne(id) {
+        const orders = await pool.query(`
+            SELECT
+                "orders"."id",
+                "orders"."sum",
+                "orders"."status",
+                CONCAT("customers"."surname", ' ', "customers"."name", ' ', "customers"."patronym") AS customer
+            FROM "orders"
+            JOIN "customers" ON "orders"."customer" = "customers"."id"
+            WHERE "orders"."id" = ${id}
         `);
 
         return orders;

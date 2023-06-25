@@ -38,7 +38,8 @@ CREATE TABLE "order_details" (
   "id" serial PRIMARY KEY,
   "count" bigint,
   "good" bigint,
-  "order" bigint
+  "order" bigint,
+  "remnant" bigint
 );
 
 CREATE TABLE "orders" (

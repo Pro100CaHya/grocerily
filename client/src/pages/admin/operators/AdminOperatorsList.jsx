@@ -1,46 +1,45 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 import Table from 'react-bootstrap/Table';
 
 import PageLayout from "../../../components/ui/PageLayout";
 
 import { useFetching } from "../../../hooks/useFetching";
-import { OrdersService } from "../../../API/OrdersService";
-import { UserContext } from "../../../context/UserContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Button } from "react-bootstrap";
+import { UsersService } from "../../../API/UsersService";
 
-const CustomerOrdersList = () => {
+const AdminOperatorsList = () => {
     const navigate = useNavigate();
-    const {user, setUser} = useContext(UserContext);
-    const [orders, setOrders] = useState([]);
+    const [operators, setOperators] = useState([]);
 
-    const [fetchOrders, isFetchingLoading, fetchError] = useFetching(async () => {
-        const getOrders = await OrdersService.getByCustomer(user.userId);
+    const [fetchOperators, isFetchingLoading, fetchError] = useFetching(async () => {
+        const getOperators = await UsersService.getOperators("operator");
 
-        setOrders(getOrders.data.data.rows);
+        setOperators(getOperators.data.data.rows);
     });
 
-    const [deleteOrder, isDeleteLoading, deleteError] = useFetching(async (id) => {
-        const deleteOrderRes = await OrdersService.deleteOne(id);
+    const [deleteOperator, isDeleteLoading, deleteError] = useFetching(async (selectedOperator) => {
+        const deleteRes = await UsersService.deleteOne(selectedOperator.id);
 
-        const deletedOrderId = orders.findIndex((category) => category.id === id);
-        const newOrders = [...orders];
-        newOrders.splice(deletedOrderId, 1);
+        const deletedOperatorId = operators.findIndex((operator) => operator.id === selectedOperator.id);
+        const newOperators = [...operators];
+        newOperators.splice( deletedOperatorId, 1);
 
-        setOrders(newOrders);
-    })
+        setOperators(newOperators);
+    });
+
+    const buttonDeleteHandler = (client) => {
+        deleteOperator(client);
+    }
 
     useEffect(() => {
-        fetchOrders();
+        fetchOperators();
     }, []);
-
-    const buttonDeleteHandler = async (id) => {
-        await deleteOrder(id);
-    }
 
     return (
         <>
-            <PageLayout title={"Мои заказы"}>
+            <PageLayout title={"Список операторов"}>
                 {
                     isFetchingLoading === true
                         ?
@@ -68,51 +67,38 @@ const CustomerOrdersList = () => {
                                         :
                                         <div className="mt-3" style={{ minHeight: "32px" }}></div>
                             }
+                            <Button onClick={() => navigate("/operators/add")}>
+                                Добавить оператора
+                            </Button>
                             <Table striped bordered hover
                                 className="mt-3"
                             >
                                 <thead>
                                     <tr>
-                                        <th>Номер заказа</th>
-                                        <th>Сумма</th>
-                                        <th>Статус</th>
-                                        <th></th>
+                                        <th>ID</th>
+                                        <th>Никнейм</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {
-                                        orders.map((order) =>
-                                            <tr key={order.id}>
+                                        operators.map((operator) =>
+                                            <tr key={operator.id}>
                                                 <td>
                                                     {
-                                                        order.id
+                                                        operator.id
                                                     }
                                                 </td>
                                                 <td>
                                                     {
-                                                        order.sum
+                                                        operator.username
                                                     }
-                                                </td>
-                                                <td>
-                                                    {
-                                                        order.status === "pre-order"
-                                                            ? "Предзаказ"
-                                                            : order.status === "confirmed"
-                                                                ? "Подтверждён"
-                                                                : order.status === "done"
-                                                                    ? "Выполнен"
-                                                                    : ""
-                                                    }
-                                                </td>
-                                                <td>
-                                                    <Link to={`/orders/${order.id}`}>Подробнее</Link>
                                                 </td>
                                                 <td>
                                                     <span
                                                         className="text-danger text-decoration-underline"
                                                         style={{ cursor: "pointer" }}
-                                                        onClick={(e) => buttonDeleteHandler(order.id)}
+                                                        onClick={(e) => buttonDeleteHandler(operator)}
                                                     >
                                                         Удалить
                                                     </span>
@@ -129,4 +115,4 @@ const CustomerOrdersList = () => {
     );
 };
 
-export default CustomerOrdersList;
+export default AdminOperatorsList;

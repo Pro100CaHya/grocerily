@@ -34,11 +34,20 @@ class UsersService {
         return user;
     }
 
-    async getAll() {
-        const users = await pool.query(`
+    async getAll(role) {
+        let sqlQuery = `
             SELECT *
             FROM "users"
-        `);
+        `;
+
+        if (role !== undefined) {
+            sqlQuery = `
+                SELECT *
+                FROM "users"
+                WHERE "role" = '${role}'
+            `;
+        }
+        const users = await pool.query(sqlQuery);
 
         return users;
     }

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import PageLayout from "../components/ui/PageLayout";
 
-import { UserService } from "../API/UsersService";
+import { UsersService } from "../API/UsersService";
 import { UserContext } from "../context/UserContext";
 import { CustomersService } from "../API/CustomersService";
 
@@ -30,7 +30,7 @@ const Auth = () => {
         let authResponse;
 
         try {
-            authResponse = await UserService.authorization(authData);
+            authResponse = await UsersService.authorization(authData);
         } catch (error) {
             setLabel("Неверный логин/пароль");
 
@@ -47,6 +47,8 @@ const Auth = () => {
             authResponse.data.data.rows[0].role === "regular customer") {
                 const customersRes = await CustomersService.getAll();
                 user = customersRes.data.data.rows.find((customer) => customer.user == authResponse.data.data.rows[0].id);
+
+                localStorage.setItem("userId", user.id);
         }
 
         setUser({
